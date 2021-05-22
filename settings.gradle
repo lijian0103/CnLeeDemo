@@ -2,3 +2,4 @@ include ':touchEvent'
 include ':motionLayout'
 include ':constraintLayout'
 rootProject.name = "CnLeeDemo"
+include ':protobuf'
