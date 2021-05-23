@@ -3,3 +3,4 @@ include ':motionLayout'
 include ':constraintLayout'
 rootProject.name = "CnLeeDemo"
 include ':protobuf'
+include ':avatarAnimation'
