@@ -1,0 +1,20 @@
+{
+    "bixin": {
+        "repeat": false,
+        "list": [
+            "OK",
+            "huihuishou"
+        ]
+    },
+    "listen": {
+        "repeat": true,
+        "list": [
+            "sikao",
+            "idle",
+            "OK",
+            "huihuishou",
+            "sikao",
+            "idle"
+        ]
+    }
+}
