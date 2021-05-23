@@ -97,8 +97,7 @@ public class ActionStateMachine extends StateMachine {
         public boolean processMessage(Message msg) {
             Log.d(TAG, "[RunningState] processMessage");
             if (msg.what == MSG_TO_IDLE) {
-                transitionTo(mPendingState);
-                sendMessage(MSG_TO_WORK);
+                turnToWork();
                 return HANDLED;
             }
             return NOT_HANDLED;
