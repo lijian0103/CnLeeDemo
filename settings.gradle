@@ -4,3 +4,5 @@ include ':constraintLayout'
 rootProject.name = "CnLeeDemo"
 include ':protobuf'
 include ':avatarAnimation'
+include ':methodTest'
+include ':javaMethodTest'

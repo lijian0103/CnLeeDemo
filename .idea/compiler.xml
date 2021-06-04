@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="CnLeeDemo.avatarAnimation" target="11" />
+      <module name="CnLeeDemo.constraintLayout" target="11" />
+      <module name="CnLeeDemo.motionLayout" target="11" />
+      <module name="CnLeeDemo.protobuf" target="11" />
+      <module name="CnLeeDemo.touchEvent" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
