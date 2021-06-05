@@ -4,8 +4,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-          <!-- this option can support java main method execute.-->
-<!--        <option name="delegatedBuild" value="false" />-->
         <option name="testRunner" value="PLATFORM" />
         <option name="disableWrapperSourceDistributionNotification" value="true" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
@@ -20,6 +18,7 @@
             <option value="$PROJECT_DIR$/methodTest" />
             <option value="$PROJECT_DIR$/motionLayout" />
             <option value="$PROJECT_DIR$/protobuf" />
+            <option value="$PROJECT_DIR$/rxjavaCase" />
             <option value="$PROJECT_DIR$/touchEvent" />
           </set>
         </option>
