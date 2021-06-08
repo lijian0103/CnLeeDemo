@@ -48,7 +48,7 @@ public class AvatarBehaviorEngine {
     public void doAvatarBehavior(AvatarOption avatarOption) {
         transformAtomActions(avatarOption);
         Log.d(TAG, "[doAvatarBehavior] isRepeat: " + isRepeat + " action list: " + new Gson().toJson(mActionOptions));
-        mBehaviorExecuteManager.addBehavior(mActionOptions, isRepeat);
+        mBehaviorExecuteManager.notifyAddBehavior(mActionOptions, isRepeat);
     }
 
     /**
