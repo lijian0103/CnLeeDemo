@@ -1,5 +1,7 @@
 package cn.cnlee.demo.animation.avatar;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,10 +44,15 @@ public class BehaviorExecuteManager {
      * @param options AvatarOption
      */
     public void addBehavior(List<AvatarOption> options, boolean needRepeat) {
+        Log.e(TAG, "===addBehavior==");
         cancel();
         mAvatarOptions.addAll(options);
         mNeedRepeat = needRepeat;
         start();
+    }
+
+    public void notifyAddBehavior(List<AvatarOption> options, boolean needRepeat) {
+        mActionStateMachine.addBehavior(options, needRepeat);
     }
 
     /**
@@ -54,6 +61,7 @@ public class BehaviorExecuteManager {
      * @return AvatarOption
      */
     public AvatarOption getNextAction() {
+        Log.e(TAG, "===getNextAction==");
         AvatarOption option;
         if (mAvatarOptions.isEmpty() && mNeedRepeat && !mExecutedAvatarOptions.isEmpty()) {
             mAvatarOptions.addAll(mExecutedAvatarOptions);
