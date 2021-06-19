@@ -10,7 +10,7 @@
         <module name="CnLeeDemo.javaMethodTest" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.7">
+    <bytecodeTargetLevel target="1.8">
       <module name="CnLeeDemo.avatarAnimation" target="11" />
       <module name="CnLeeDemo.constraintLayout" target="11" />
       <module name="CnLeeDemo.motionLayout" target="11" />
