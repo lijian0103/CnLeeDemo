@@ -11,6 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="CnLeeDemo.actionExecutor" target="11" />
       <module name="CnLeeDemo.avatarAnimation" target="11" />
       <module name="CnLeeDemo.constraintLayout" target="11" />
       <module name="CnLeeDemo.copyAssetFiles" target="11" />
