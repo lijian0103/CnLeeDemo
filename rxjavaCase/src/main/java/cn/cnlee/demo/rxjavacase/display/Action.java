@@ -1,6 +1,5 @@
 package cn.cnlee.demo.rxjavacase.display;
 
-import android.os.SystemClock;
 import android.util.Log;
 
 import cn.cnlee.demo.rxjavacase.WorkThread;
@@ -28,8 +27,9 @@ public class Action {
      * @param callback
      */
     public void display(ActionOption option, ActionCallback callback) {
-        Log.e(Action.class.getSimpleName(), "======display=====");
+        Log.e(Action.class.getSimpleName(), "======display==start===" + option);
         new WorkThread("display").postDelayed(() -> {
+            Log.e(Action.class.getSimpleName(), "======display==end===" + option);
             callback.onCallback(option, 0, "result", "msg");
         }, 2000l);
     }
