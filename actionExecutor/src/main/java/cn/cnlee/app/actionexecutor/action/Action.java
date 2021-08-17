@@ -13,7 +13,7 @@ public abstract class Action {
     @WorkerThread
     public abstract void doAction();
 
-    public final void startWork() {
+    public final void startAction() {
         doAction();
     }
 }
