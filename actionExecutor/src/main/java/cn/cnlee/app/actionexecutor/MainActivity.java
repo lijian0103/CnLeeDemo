@@ -4,9 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import cn.cnlee.app.actionexecutor.taskexecutor.ActionManagerTaskExecutor;
-import cn.cnlee.app.actionexecutor.taskexecutor.TaskExecutor;
-import cn.cnlee.app.actionexecutor.util.LogUtils;
+import cn.cnlee.app.actionexecutor.demo.Test;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,23 +14,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new Thread(() -> {
-            TaskExecutor taskExecutor = new ActionManagerTaskExecutor();
-            taskExecutor.getBackgroundExecutor().execute(() -> {
-                LogUtils.e(TAG, Thread.currentThread() + " 11");
-            });
-            LogUtils.e(TAG, taskExecutor.getBackgroundExecutorThread() + "===" + taskExecutor.getMainThreadExecutor());
-        }).start();
-
-        new Thread(() -> {
-            TaskExecutor taskExecutor2 = new ActionManagerTaskExecutor();
-            taskExecutor2.getBackgroundExecutor().execute(() -> {
-                LogUtils.e(TAG, Thread.currentThread() + " 22");
-            });
-            LogUtils.e(TAG, taskExecutor2.getBackgroundExecutorThread() + "==2==" + taskExecutor2.getMainThreadExecutor());
-
-        }).start();
+        Test.test();
+//        new Thread(() -> {
+//            TaskExecutor taskExecutor = new ActionManagerTaskExecutor();
+//            taskExecutor.getBackgroundExecutor().execute(() -> {
+//                LogUtils.e(TAG, Thread.currentThread() + " 11");
+//            });
+//            LogUtils.e(TAG, taskExecutor.getBackgroundExecutorThread() + "===" + taskExecutor.getMainThreadExecutor());
+//        }).start();
+//
+//        new Thread(() -> {
+//            TaskExecutor taskExecutor2 = new ActionManagerTaskExecutor();
+//            taskExecutor2.getBackgroundExecutor().execute(() -> {
+//                LogUtils.e(TAG, Thread.currentThread() + " 22");
+//            });
+//            LogUtils.e(TAG, taskExecutor2.getBackgroundExecutorThread() + "==2==" + taskExecutor2.getMainThreadExecutor());
+//
+//        }).start();
 
     }
 }
