@@ -1,19 +1,16 @@
 package cn.cnlee.demo.constrainlayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Observer;
-
-import android.graphics.Color;
 import android.os.Bundle;
-import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
 
 import java.util.Collections;
 import java.util.Random;
@@ -122,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view view
      */
-    @OnClick({R.id.btn_change_pos, R.id.btn_change_txt})
+    @OnClick({R.id.btn_change_pos, R.id.btn_change_txt, R.id.btn_change_icon})
     public void onBtnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_change_txt:
@@ -138,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_change_pos:
                 Log.d(TAG, "btn_change_pos onClick");
                 mViewModel.setLocation(new Random().nextInt(4) + 1);
+                break;
+            case R.id.btn_change_icon:
+                Log.d(TAG, "btn_change_icon onClick");
+                mViewModel.getVoiceType().setValue(new Random().nextInt(3));
+                mBinding.setVariable(cn.cnlee.demo.constrainlayout.BR.viewmodel, mViewModel);
+                mBinding.executePendingBindings();
                 break;
             default:
                 break;

@@ -41,7 +41,7 @@
             android:id="@+id/icon"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@mipmap/sound_wave"
+            app:setVoiceIcon="@{viewmodel.voiceType}"
             app:layout_constraintStart_toEndOf="@id/tv"
             app:layout_constraintTop_toTopOf="@id/iv" />
 
@@ -63,6 +63,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_change_txt" />
+
+        <Button
+            android:id="@+id/btn_change_icon"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="点击改ICON"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_change_pos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
