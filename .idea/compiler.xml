@@ -15,6 +15,7 @@
       <module name="CnLeeDemo.avatarAnimation" target="11" />
       <module name="CnLeeDemo.constraintLayout" target="11" />
       <module name="CnLeeDemo.copyAssetFiles" target="11" />
+      <module name="CnLeeDemo.databindingRecyclerview" target="11" />
       <module name="CnLeeDemo.motionLayout" target="11" />
       <module name="CnLeeDemo.playVideo" target="11" />
       <module name="CnLeeDemo.protobuf" target="11" />
