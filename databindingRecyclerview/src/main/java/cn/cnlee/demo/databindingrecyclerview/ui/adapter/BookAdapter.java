@@ -1,6 +1,7 @@
 package cn.cnlee.demo.databindingrecyclerview.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 book.setStatus("测试");
                 notifyDataSetChanged();
             }
+        });
+        holder.binding.bookImgIv.setOnClickListener(view -> {
+            Log.d("BookAdapter", "===book item click == " + position);
+
+            cn.cnlee.demo.databindingrecyclerview.ui.adapter.BookDetailDialog detailDialog = new cn.cnlee.demo.databindingrecyclerview.ui.adapter.BookDetailDialog(holder.binding.getRoot().getContext(), book);
+            detailDialog.show();
         });
         holder.binding.executePendingBindings();
     }

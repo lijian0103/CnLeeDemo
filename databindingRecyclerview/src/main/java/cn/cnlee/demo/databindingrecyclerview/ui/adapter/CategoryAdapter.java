@@ -1,6 +1,7 @@
 package cn.cnlee.demo.databindingrecyclerview.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private Context context;
     private List<Category> categoryList;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
     public CategoryAdapter(Context context, List<Category> list) {
         this.context = context;
@@ -50,8 +52,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.binding.setVariable(BR.item, categoryList.get(position));
 
         holder.binding.booksRv.setLayoutManager(new GridLayoutManager(this.context, 4));
-        BookAdapter bookAdapter = new BookAdapter(this.context, categoryList.get(position).getBooks());
+        BookAdapter bookAdapter = new BookAdapter(holder.binding.getRoot().getContext(), categoryList.get(position).getBooks());
+        Log.d("CategoryAdapter", this.context + " === " + holder.binding.getRoot().getContext());
         holder.binding.booksRv.setAdapter(bookAdapter);
+        holder.binding.booksRv.setRecycledViewPool(viewPool);
         holder.binding.executePendingBindings();
     }
 
