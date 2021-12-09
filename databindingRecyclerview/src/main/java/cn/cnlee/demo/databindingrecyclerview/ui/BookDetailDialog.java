@@ -1,4 +1,4 @@
-package cn.cnlee.demo.databindingrecyclerview.ui.adapter;
+package cn.cnlee.demo.databindingrecyclerview.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import cn.cnlee.demo.databindingrecyclerview.R;
@@ -23,9 +24,11 @@ public class BookDetailDialog extends Dialog {
 
     private BookDetailDialogBinding mDialogBinding;
     private Book mBook;
+    private Context mContext;
 
     public BookDetailDialog(@NonNull Context context, Book book) {
         super(context, R.style.CustomDialog);
+        this.mContext = context;
         this.mBook = book;
     }
 
@@ -35,6 +38,8 @@ public class BookDetailDialog extends Dialog {
         mDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.book_detail_dialog, null, false);
 
         mDialogBinding.setItem(this.mBook);
+        //添加这句才能动态更新内容
+        mDialogBinding.setLifecycleOwner((AppCompatActivity)this.mContext);
         setContentView(mDialogBinding.getRoot());
     }
 

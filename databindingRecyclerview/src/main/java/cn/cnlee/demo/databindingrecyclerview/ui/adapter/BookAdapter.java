@@ -16,6 +16,7 @@ import cn.cnlee.demo.databindingrecyclerview.BR;
 import cn.cnlee.demo.databindingrecyclerview.R;
 import cn.cnlee.demo.databindingrecyclerview.data.Book;
 import cn.cnlee.demo.databindingrecyclerview.databinding.BookItemBinding;
+import cn.cnlee.demo.databindingrecyclerview.ui.BookDetailDialog;
 
 /**
  * @Description TODO
@@ -60,7 +61,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.binding.bookImgIv.setOnClickListener(view -> {
             Log.d("BookAdapter", "===book item click == " + position);
 
-            cn.cnlee.demo.databindingrecyclerview.ui.adapter.BookDetailDialog detailDialog = new cn.cnlee.demo.databindingrecyclerview.ui.adapter.BookDetailDialog(holder.binding.getRoot().getContext(), book);
+            BookDetailDialog detailDialog = new BookDetailDialog(holder.binding.getRoot().getContext(), book);
             detailDialog.show();
         });
         holder.binding.executePendingBindings();
