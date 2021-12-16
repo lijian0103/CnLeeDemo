@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="multi_state_button">
+        <attr name="progressColor" format="reference|color" />
+        <attr name="progressBgColor" format="reference|color" />
+        <attr name="buttonNormalColor" format="reference|color" />
+        <attr name="buttonPressedColor" format="reference|color" />
+        <attr name="buttonCornerRadius" format="reference|color" />
+        <attr name="showProgressNum" format="boolean" />
+    </declare-styleable>
+</resources>
