@@ -2,15 +2,18 @@ package cn.cnlee.demo.databindingrecyclerview.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatButton;
 
 import cn.cnlee.demo.databindingrecyclerview.R;
+import cn.cnlee.demo.databindingrecyclerview.TestMutiStateButtonActivity;
 
 /**
  * @Description TODO
@@ -20,7 +23,7 @@ import cn.cnlee.demo.databindingrecyclerview.R;
  */
 public class MultiStateButton extends AppCompatButton {
 
-    private int mProgress; //当前进度
+    private int mProgress = 20; //当前进度
     private int mMaxProgress = 100; //最大进度：默认为100
     private int mMinProgress = 0;//最小进度：默认为0
     private GradientDrawable mProgressDrawable;// 加载进度时的进度颜色
@@ -49,7 +52,7 @@ public class MultiStateButton extends AppCompatButton {
         // 初始化进度条Drawable
         mProgressDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.rect_progress).mutate();
         // 初始化进度条背景Drawable
-        mProgressDrawableBg = (GradientDrawable) getResources().getDrawable(R.drawable.rect_progressbg).mutate();
+        mProgressDrawableBg = (GradientDrawable) getResources().getDrawable(R.drawable.rect_progress_bg).mutate();
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.multi_state_button);
         try {
@@ -64,19 +67,19 @@ public class MultiStateButton extends AppCompatButton {
             isShowProgress = attr.getBoolean(R.styleable.multi_state_button_showProgressNum, true);
 
             // 给按钮的状态Drawable添加被点击时的状态
-            mNormalDrawable.addState(new int[]{android.R.attr.state_pressed}, getPressedDrawable(attr));
+//            mNormalDrawable.addState(new int[]{android.R.attr.state_pressed}, getPressedDrawable(attr));
 
             // 给按钮的状态Drawable添加其他时候的状态
             mNormalDrawable.addState(new int[]{}, getNormalDrawable(attr));
 
             // 获取进度条颜色属性值
-            int defaultProgressColor = getResources().getColor(R.color.purple_progress);
+            int defaultProgressColor = getResources().getColor(R.color.use_blue);
             int progressColor = attr.getColor(R.styleable.multi_state_button_progressColor, defaultProgressColor);
             // 设置进度条Drawable的颜色
             mProgressDrawable.setColor(progressColor);
 
             // 获取进度条背景颜色属性值
-            int defaultProgressBgColor = getResources().getColor(R.color.progress_bg);
+            int defaultProgressBgColor = getResources().getColor(R.color.normal_gray);
             int progressBgColor = attr.getColor(R.styleable.multi_state_button_progressBgColor, defaultProgressBgColor);
             // 设置进度条背景Drawable的颜色
             mProgressDrawableBg.setColor(progressBgColor);
@@ -86,7 +89,7 @@ public class MultiStateButton extends AppCompatButton {
 
         // 初始化状态
         isFinish = false;
-        isStop = true;
+        isStop = false;
         isStart = false;
 
         // 设置圆角
@@ -114,12 +117,59 @@ public class MultiStateButton extends AppCompatButton {
     // 获取状态Drawable的正常状态下的背景
     private Drawable getNormalDrawable(TypedArray attr) {
         GradientDrawable drawableNormal =
-                (GradientDrawable) getResources().getDrawable(R.drawable.rect_normal).mutate();// 修改时就不会影响其它drawable对象的状态
+                (GradientDrawable) getResources().getDrawable(R.drawable.rect_progress).mutate();// 修改时就不会影响其它drawable对象的状态
         drawableNormal.setCornerRadius(cornerRadius); // 设置圆角半径
-        int defaultNormal = getResources().getColor(R.color.blue_normal);
+        int defaultNormal = getResources().getColor(R.color.use_blue);
         int colorNormal = attr.getColor(R.styleable.multi_state_button_buttonNormalColor, defaultNormal);
         drawableNormal.setColor(colorNormal);//设置颜色
         return drawableNormal;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        Log.d(TestMutiStateButtonActivity.class.getSimpleName(), "=======onDraw====");
+
+        if (mProgress > mMinProgress && mProgress <= mMaxProgress && !isFinish) {
+
+            // 更新进度：
+            float scale = (float) getProgress() / (float) mMaxProgress;
+            float indicatorWidth = (float) getMeasuredWidth() * scale;
+
+
+            mProgressDrawable.setBounds(0, 0, (int) indicatorWidth, getMeasuredHeight());
+
+            mProgressDrawable.draw(canvas);
+
+            // 进度完成时回调方法，并更变状态
+            if (mProgress == mMaxProgress) {
+                setBackgroundCompat(mProgressDrawable);
+                isFinish = true;
+                if (onStateListener != null) {
+                    onStateListener.onFinish();
+                }
+
+            }
+
+        }
+        super.onDraw(canvas);
+    }
+
+    // 获取进度
+    public int getProgress() {
+        return mProgress;
+    }
+
+    // 设置进度信息
+    public void setProgress(int progress) {
+        Log.d(MultiStateButton.class.getSimpleName(), "======progress== " + progress);
+        if (!isFinish && !isStop) {
+            mProgress = progress;
+            if (isShowProgress) setText(mProgress + " %");
+            // 设置背景
+            setBackgroundCompat(mProgressDrawableBg);
+            invalidate();
+        }
+
     }
 
     // 设置状态监听接口
