@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton
+    <cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton2
         android:id="@+id/multi_btn"
         android:layout_width="120dp"
         android:layout_height="48dp"

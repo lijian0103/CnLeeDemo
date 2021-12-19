@@ -8,17 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton;
-import cn.cnlee.demo.databindingrecyclerview.ui.State;
+import cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton2;
 
-public class TestMutiStateButtonActivity extends AppCompatActivity {
+public class TestMutiStateButton2Activity extends AppCompatActivity {
 
-    private MultiStateButton multiStateButton;
+    private MultiStateButton2 multiStateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         multiStateButton = findViewById(R.id.multi_btn);
         updateData();
     }
@@ -28,14 +27,13 @@ public class TestMutiStateButtonActivity extends AppCompatActivity {
     private Runnable runnable = () -> {
         if (count.get() < 100) {
             count.addAndGet(5);
-            multiStateButton.setProgressText(State.PAUSE_DOWNLOAD.getName(), count.get());
+            multiStateButton.setProgress(count.get());
             handler.postDelayed(this.runnable, 500l);
         }
     };
 
 
     private void updateData() {
-        multiStateButton.setState(State.PAUSE_DOWNLOAD);
         handler.postDelayed(runnable, 500l);
     }
 }

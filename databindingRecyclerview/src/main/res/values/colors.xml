@@ -10,6 +10,6 @@
 
     <color name="normal_gray">#D4D5D6</color>
     <color name="use_blue">#70B9F5</color>
-    <color name="use_white">#AEDFF7</color>
+    <color name="use_white">#FFFFFFFF</color>
     <color name="light_black">#3F374A</color>
 </resources>
