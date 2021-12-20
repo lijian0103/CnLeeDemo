@@ -71,7 +71,15 @@ public class MainActivity extends AppCompatActivity {
             books.add(Book.builder().img("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F451b4cdbe0bc0ae06dfe1bf22af8a86a55a532f6b609-UxKPc1_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640623405&t=f698ead9d237df609ce4c403ec2aec40").name("222").status("close").build());
             books.add(Book.builder().img("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F451b4cdbe0bc0ae06dfe1bf22af8a86a55a532f6b609-UxKPc1_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640623405&t=f698ead9d237df609ce4c403ec2aec40").name("333").status("open").build());
             books.add(Book.builder().img("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F451b4cdbe0bc0ae06dfe1bf22af8a86a55a532f6b609-UxKPc1_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640623405&t=f698ead9d237df609ce4c403ec2aec40").name("444").status("open").build());
-            categoryList.add(Category.builder().title("标题-" + i).books(books).build());
+//            categoryList.add(Category.builder().title("标题-" + i).books(books).build());
+            Category.CategoryBuilder builder = Category.builder().title("标题-" + i).books(books);
+            if (i != 0) {
+                builder.subTitle("小标题");
+                if (i == 2) {
+                    builder.tips("这是tips");
+                }
+            }
+            categoryList.add(builder.build());
         }
     }
 

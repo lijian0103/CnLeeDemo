@@ -21,5 +21,7 @@ import lombok.experimental.Accessors;
 @Accessors(prefix = "m")
 public class Category {
     private String mTitle;
+    private String mSubTitle;
+    private String mTips;
     private List<Book> mBooks;
 }
