@@ -15,6 +15,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.cnlee.demo.databindingrecyclerview.BR;
@@ -33,6 +34,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private Context context;
     private List<Category> categoryList;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private List<BookAdapter> bookAdapters = new ArrayList<>();
 
     public CategoryAdapter(Context context, List<Category> list) {
         this.context = context;
@@ -67,12 +69,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.binding.booksRv.setLayoutManager(flexboxLayoutManager);
 
         BookAdapter bookAdapter = new BookAdapter(holder.binding.getRoot().getContext(), categoryList.get(position).getBooks());
+        bookAdapters.add(bookAdapter);
         Log.d("CategoryAdapter", this.context + " === " + holder.binding.getRoot().getContext());
         holder.binding.booksRv.setAdapter(bookAdapter);
         holder.binding.booksRv.setRecycledViewPool(viewPool);
         holder.binding.executePendingBindings();
     }
 
+    public void clearMask() {
+        for (BookAdapter bookAdapter : bookAdapters) {
+            bookAdapter.hideMask();
+        }
+    }
 
     @Override
     public int getItemCount() {

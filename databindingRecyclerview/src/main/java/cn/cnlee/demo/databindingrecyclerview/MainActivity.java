@@ -1,9 +1,12 @@
 package cn.cnlee.demo.databindingrecyclerview;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,21 @@ public class MainActivity extends AppCompatActivity {
         binding.categoryRv.setLayoutManager(new LinearLayoutManager(this));
         categoryAdapter = new CategoryAdapter(this, categoryList);
         binding.categoryRv.setAdapter(categoryAdapter);
+
+        binding.touchOverlayFl.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.e(MainActivity.class.getSimpleName(), "======="+ event.getAction());
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        categoryAdapter.clearMask();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+                return false;
+            }
+        });
 
 //        categoryAdapter.notifyDataSetChanged();
     }

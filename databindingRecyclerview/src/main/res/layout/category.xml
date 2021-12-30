@@ -9,7 +9,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_rv"
             android:layout_width="match_parent"
-            android:paddingRight="20dp"
+            android:paddingRight="10dp"
             android:layout_height="wrap_content"
             android:fadeScrollbars="false"
             android:scrollbarFadeDuration="0"
@@ -17,5 +17,9 @@
             android:scrollbarThumbVertical="@android:color/darker_gray"
             android:scrollbars="vertical"
             tools:text="MissingConstraints" />
+        <FrameLayout
+            android:id="@+id/touch_overlay_fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

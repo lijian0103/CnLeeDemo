@@ -16,7 +16,6 @@ import cn.cnlee.demo.databindingrecyclerview.BR;
 import cn.cnlee.demo.databindingrecyclerview.R;
 import cn.cnlee.demo.databindingrecyclerview.data.Book;
 import cn.cnlee.demo.databindingrecyclerview.databinding.BookItemBinding;
-import cn.cnlee.demo.databindingrecyclerview.ui.BookDetailDialog;
 
 /**
  * @Description TODO
@@ -28,6 +27,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     private Context context;
     private List<Book> books;
+    private int maskIndex = -1;
 
     public BookAdapter(Context context, List<Book> list) {
         this.context = context;
@@ -50,6 +50,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookAdapter.BookViewHolder holder, int position) {
         Book book = books.get(position);
         holder.binding.setVariable(BR.item, book);
+        boolean isOperate = maskIndex == position;
+        holder.binding.maskFl.setVisibility(isOperate ? View.VISIBLE : View.GONE);
+        holder.binding.maskFl.setOnClickListener(view -> {
+//            maskIndex = -1;
+//            notifyDataSetChanged();
+        });
 
         holder.binding.setClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +67,22 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.binding.bookImgIv.setOnClickListener(view -> {
             Log.d("BookAdapter", "===book item click == " + position);
 
-            BookDetailDialog detailDialog = new BookDetailDialog(holder.binding.getRoot().getContext(), book);
-            detailDialog.show();
+//            BookDetailDialog detailDialog = new BookDetailDialog(holder.binding.getRoot().getContext(), book);
+//            detailDialog.show();
+            maskIndex = position;
+            notifyDataSetChanged();
         });
         holder.binding.executePendingBindings();
     }
 
+
+    public void hideMask() {
+        Log.d("BookAdapter", "===hideMask=== " + maskIndex);
+        if (maskIndex != -1) {
+            notifyItemChanged(maskIndex);
+            maskIndex = -1;
+        }
+    }
 
     @Override
     public int getItemCount() {
