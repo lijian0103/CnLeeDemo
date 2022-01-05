@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton;
+import cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton3;
 import cn.cnlee.demo.databindingrecyclerview.ui.State;
 
 public class TestMutiStateButtonActivity extends AppCompatActivity {
 
-    private MultiStateButton multiStateButton;
+    private MultiStateButton3 multiStateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

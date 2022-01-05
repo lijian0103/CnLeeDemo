@@ -6,20 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton3
+    <cn.cnlee.demo.databindingrecyclerview.ui.MultiStateButton
         android:id="@+id/multi_btn"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
+        android:layout_width="240dp"
+        android:layout_height="72dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:textColor="@color/use_white"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:progressBtnColor="@color/use_blue"
-        app:progressBtnBgColor="@color/normal_gray"
-        app:progressBtnBorderWidth="2dp"
-        app:progressBtnRadius="14dp"
-        app:progressBtnTextSize="6sp"
-        app:progressBtnTextColor="@color/light_black"
-        app:progressBtnTextCoverColor="@color/use_white" />
+        tools:background="@drawable/avatar_enable_btn"
+        tools:drawableLeft="@drawable/icon_play"
+        tools:text="继续下载" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

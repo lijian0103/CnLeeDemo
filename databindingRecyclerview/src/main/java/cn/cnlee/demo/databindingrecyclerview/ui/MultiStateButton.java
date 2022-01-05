@@ -1,26 +1,21 @@
 package cn.cnlee.demo.databindingrecyclerview.ui;
 
-import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.util.Log;
 
-import androidx.appcompat.widget.AppCompatTextView;
-
-import java.text.DecimalFormat;
+import androidx.appcompat.widget.AppCompatButton;
 
 import cn.cnlee.demo.databindingrecyclerview.R;
+import cn.cnlee.demo.databindingrecyclerview.TestMutiStateButtonActivity;
 
 /**
  * @Description TODO
@@ -28,374 +23,209 @@ import cn.cnlee.demo.databindingrecyclerview.R;
  * @Date 2021/12/16
  * @Version 1.0
  */
-public class MultiStateButton extends AppCompatTextView {
+public class MultiStateButton extends AppCompatButton {
 
-    //背景画笔
-    private Paint mBackgroundPaint;
-    //按钮文字画笔
-    private volatile Paint mTextPaint;
-
-    //背景颜色
-    private int mBackgroundColor;
-    //下载中后半部分后面背景颜色
-    private int mBackgroundSecondColor;
-    //文字颜色
-    private int mTextColor;
-    //覆盖后颜色
-    private int mTextCoverColor;
-
-    private int mTextSize;
-
-    private float mButtonRadius;
-    //边框宽度
-    private float mBorderWidth;
-
-    private float mProgress = -1;
-    private float mToProgress;
-    private int mMaxProgress;
-    private int mMinProgress;
-    private float mProgressPercent;
-
-    //是否显示边框，默认是true
-    private boolean showBorder;
-    private RectF mBackgroundBounds;
-    private LinearGradient mProgressTextGradient;
-
-    //下载平滑动画
-    private ValueAnimator mProgressAnimation;
-
-    //记录当前文字
-    private CharSequence mCurrentText;
-
-    public static final int STATE_NORMAL = 0;//开始下载
-    public static final int STATE_DOWNLOADING = 1;//下载之中
-    public static final int STATE_PAUSE = 2;//暂停下载
-    public static final int STATE_FINISH = 3;//下载完成
-
-    private State mState;
-
-    public MultiStateButton(Context context) {
-        this(context, null);
-    }
+    private static final String TAG = MultiStateButton.class.getSimpleName();
+    private State mCurrentState;
+    private int mProgress = 50; //当前进度
+    private int mMaxProgress = 100; //最大进度：默认为100
+    private int mMinProgress = 0;//最小进度：默认为0
+    private GradientDrawable mProgressDrawable;// 加载进度时的进度颜色
+    private GradientDrawable mProgressDrawableBg;// 加载进度时的背景色
+    private Drawable mNormalDrawable; // 按钮在不同状态的颜色效果
+    private boolean isShowProgress;  //是否展示进度
+    private boolean isFinish; // 结束状态
+    private boolean isStop;// 停止状态
+    private boolean isStart; // 刚开始的状态
+    private MultiStateButton2.OnStateListener onStateListener; //结束时的监听
 
     public MultiStateButton(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(context, attrs);
     }
 
     public MultiStateButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if (!isInEditMode()) {
-            initAttrs(context, attrs);
-            init();
-            setupAnimations();
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attributeSet) {
+        // 初始化按钮状态Drawable
+    }
+
+    // 设置按钮背景
+    private void setBackgroundCompat(Drawable drawable) {
+        int pL = getPaddingLeft();
+        int pT = getPaddingTop();
+        int pR = getPaddingRight();
+        int pB = getPaddingBottom();
+
+        setBackground(drawable);
+        setPadding(pL, pT, pR, pB);
+    }
+
+    // 获取状态Drawable的正常状态下的背景
+    private Drawable getBlueDrawable() {
+        Drawable drawableNormal = getResources().getDrawable(R.drawable.normal_btn_selector, null);//
+        // 修改时就不会影响其它drawable对象的状态
+        return drawableNormal;
+    }
+
+    private Drawable getBlurDrawable() {
+        Drawable drawableNormal = getResources().getDrawable(R.drawable.avatar_disable_btn, null);//
+        // 修改时就不会影响其它drawable对象的状态
+        return drawableNormal;
+    }
+
+    public void setState(State state) {
+        Log.d(TAG, "state: " + state + " ,mCurrentState: " + mCurrentState);
+        if (mCurrentState != state) {
+            String stateTxt = state.getName();
+            Log.d(TAG, "stateTxt: " + stateTxt);
+            setButtonBg(state);
+            setDrawableIcon(state);
+            setText(stateTxt);
+            mCurrentState = state;
         }
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.multi_state_button);
-        try {
-            mBackgroundColor = a.getColor(R.styleable.multi_state_button_progressBtnColor, Color.parseColor("#3385FF"));
-            mBackgroundSecondColor = a.getColor(R.styleable.multi_state_button_progressBtnBgColor, Color.parseColor("#E8E8E8"));
-            mButtonRadius = a.getDimension(R.styleable.multi_state_button_progressBtnRadius, 0);
-            mTextColor = a.getColor(R.styleable.multi_state_button_progressBtnTextColor, mBackgroundColor);
-            mTextCoverColor = a.getColor(R.styleable.multi_state_button_progressBtnTextCoverColor, Color.WHITE);
-            mTextSize = (int) a.getDimension(R.styleable.multi_state_button_progressBtnTextSize, 16);
-            mBorderWidth = a.getDimension(R.styleable.multi_state_button_progressBtnBorderWidth, dp2px(2));
-        } finally {
-            a.recycle();
+    private void setDrawableIcon(State state) {
+        Drawable drawableIcon = null;
+        switch (state) {
+            case DOWNLOADING:
+                drawableIcon = getResources().getDrawable(R.drawable.icon_play, null);
+                break;
+            case PAUSE_DOWNLOAD:
+                drawableIcon = getResources().getDrawable(R.drawable.icon_pause, null);
+                break;
         }
+        if (drawableIcon != null) {
+            drawableIcon.setBounds(0, 0, drawableIcon.getMinimumWidth(), drawableIcon.getMinimumHeight());
+        }
+        setCompoundDrawables(drawableIcon, null, null, null);
     }
 
-    private void init() {
-
-        mMaxProgress = 100;
-        mMinProgress = 0;
-        mProgress = 0;
-
-        showBorder = false;
-
-        //设置背景画笔
-        mBackgroundPaint = new Paint();
-        mBackgroundPaint.setAntiAlias(true);
-        mBackgroundPaint.setStyle(Paint.Style.FILL);
-
-        //设置文字画笔
-        mTextPaint = new Paint();
-        mTextPaint.setAntiAlias(true);
-        mTextPaint.setTextSize(sp2px(mTextSize));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            //解决文字有时候画不出问题
-            setLayerType(LAYER_TYPE_SOFTWARE, mTextPaint);
+    private void setButtonBg(State state) {
+        switch (state) {
+            case SWITCHING:
+            case DOWNLOADED:
+            case NOT_DOWNLOADED:
+                setBackgroundCompat(getBlueDrawable());
+                break;
+            case NOT_ACTIVE:
+            case IN_USE:
+            case WAIT_DOWNLOAD:
+            case DOWNLOADING:
+            case PAUSE_DOWNLOAD:
+                setBackgroundCompat(getBlurDrawable());
+                break;
         }
-
-        //初始化状态设为NORMAL
-        mState = State.NOT_ACTIVE;
-        invalidate();
-    }
-
-    private void setupAnimations() {
-        //ProgressBar的动画
-        mProgressAnimation = ValueAnimator.ofFloat(0, 1).setDuration(500);
-        mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float timePercent = (float) animation.getAnimatedValue();
-                mProgress = ((mToProgress - mProgress) * timePercent + mProgress);
-                invalidate();
-            }
-        });
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.d(TestMutiStateButtonActivity.class.getSimpleName(), "=======onDraw====");
+
+        if (mProgress > mMinProgress && mProgress <= mMaxProgress && !isFinish) {
+
+//            // 更新进度：
+//            float scale = (float) getProgress() / (float) mMaxProgress;
+//            //计算 src 矩形的右边界
+//            float indicatorWidth = (float) getMeasuredWidth() * scale;
+//
+//
+//            mProgressDrawable.setBounds(0, 0, (int) indicatorWidth, getMeasuredHeight());
+//
+//            mProgressDrawable.draw(canvas);
+
+            RectF mBackgroundBounds = new RectF();
+            mBackgroundBounds.left = 0;
+            mBackgroundBounds.top = 0;
+            mBackgroundBounds.right = getMeasuredWidth();
+            mBackgroundBounds.bottom = getMeasuredHeight();
+            Paint mBackgroundPaint = new Paint();
+//
+//            mBackgroundPaint.setColor(Color.GRAY);
+            canvas.save();
+//
+            //计算 src 矩形的右边界
+            float right = getMeasuredWidth() * mProgress / (mMaxProgress + 0f);
+
+            //画出dst图层
+            mBackgroundPaint.setColor(Color.parseColor("#00000000"));
+            canvas.drawRoundRect(mBackgroundBounds, dp2px(20), dp2px(20), mBackgroundPaint);
+
+            //设置图层显示模式为 SRC_ATOP
+            PorterDuffXfermode porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP);
+            mBackgroundPaint.setColor(Color.parseColor("#FF0088CC"));
+            mBackgroundPaint.setXfermode(porterDuffXfermode);
+            Log.d(TAG, "=======onDraw==== right: " + right + " === progress: " + mProgress + " , " + getMeasuredWidth());
+            //在dst画出src矩形
+            canvas.drawRect(mBackgroundBounds.left, mBackgroundBounds.top, right, mBackgroundBounds.bottom, mBackgroundPaint);
+            canvas.restore();
+            mBackgroundPaint.setXfermode(null);
+
+//            //设置图层显示模式为 SRC_ATOP
+//            PorterDuffXfermode porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP);
+//            mBackgroundPaint.setColor(Color.parseColor("#FF0088CC"));
+//            mBackgroundPaint.setXfermode(porterDuffXfermode);
+//            //计算 src 矩形的右边界
+//            float right = mBackgroundBounds.right * mProgress / (mMaxProgress + 0f);
+//            //在dst画出src矩形
+//            canvas.drawRect(mBackgroundBounds.left, mBackgroundBounds.top, right, mBackgroundBounds.bottom,
+//                    mBackgroundPaint);
+//            canvas.drawRoundRect(mBackgroundBounds.left, mBackgroundBounds.top, right, mBackgroundBounds.bottom,
+//                    dp2px(20), dp2px(20),
+//                    mBackgroundPaint);
+//            canvas.restore();
+//            mBackgroundPaint.setXfermode(null);
+
+//            // 进度完成时回调方法，并更变状态
+//            if (mProgress == mMaxProgress) {
+//                setBackgroundCompat(mProgressDrawable);
+//                isFinish = true;
+//                if (onStateListener != null) {
+//                    onStateListener.onFinish();
+//                }
+//
+//            }
+
+        }
         super.onDraw(canvas);
-        if (!isInEditMode()) {
-            drawing(canvas);
-        }
     }
 
-    private void drawing(Canvas canvas) {
-        drawBackground(canvas);
-        drawTextAbove(canvas);
-    }
-
-    private void drawBackground(Canvas canvas) {
-
-        mBackgroundBounds = new RectF();
-        //根据Border宽度得到Button的显示区域
-        mBackgroundBounds.left = showBorder ? mBorderWidth : 0;
-        mBackgroundBounds.top = showBorder ? mBorderWidth : 0;
-        mBackgroundBounds.right = getMeasuredWidth() - (showBorder ? mBorderWidth : 0);
-        mBackgroundBounds.bottom = getMeasuredHeight() - (showBorder ? mBorderWidth : 0);
-
-        if (showBorder) {
-            mBackgroundPaint.setStyle(Paint.Style.STROKE);
-            mBackgroundPaint.setColor(mBackgroundColor);
-            mBackgroundPaint.setStrokeWidth(mBorderWidth);
-            canvas.drawRoundRect(mBackgroundBounds, mButtonRadius, mButtonRadius, mBackgroundPaint);
-        }
-        mBackgroundPaint.setStyle(Paint.Style.FILL);
-        //color
-        switch (mState) {
-            case DOWNLOADED:
-            case NOT_DOWNLOADED:
-            case SWITCHING:
-            case WAIT_DOWNLOAD:
-                mBackgroundPaint.setColor(mBackgroundColor);
-                canvas.drawRoundRect(mBackgroundBounds, mButtonRadius, mButtonRadius, mBackgroundPaint);
-                break;
-            case DOWNLOADING:
-            case PAUSE_DOWNLOAD:
-                //计算当前的进度
-                mProgressPercent = mProgress / (mMaxProgress + 0f);
-                mBackgroundPaint.setColor(mBackgroundSecondColor);
-                canvas.save();
-                //画出dst图层
-                canvas.drawRoundRect(mBackgroundBounds, mButtonRadius, mButtonRadius, mBackgroundPaint);
-                //设置图层显示模式为 SRC_ATOP
-                PorterDuffXfermode porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP);
-                mBackgroundPaint.setColor(mBackgroundColor);
-                mBackgroundPaint.setXfermode(porterDuffXfermode);
-                //计算 src 矩形的右边界
-                float right = mBackgroundBounds.right * mProgressPercent;
-                //在dst画出src矩形
-                canvas.drawRect(mBackgroundBounds.left, mBackgroundBounds.top, right, mBackgroundBounds.bottom, mBackgroundPaint);
-                canvas.restore();
-                mBackgroundPaint.setXfermode(null);
-                break;
-            case IN_USE:
-                mBackgroundPaint.setColor(mBackgroundColor);
-                canvas.drawRoundRect(mBackgroundBounds, mButtonRadius, mButtonRadius, mBackgroundPaint);
-                break;
-            case NOT_ACTIVE:
-                mBackgroundPaint.setColor(mBackgroundSecondColor);
-                canvas.drawRoundRect(mBackgroundBounds, mButtonRadius, mButtonRadius, mBackgroundPaint);
-                break;
-        }
-    }
-
-    private void drawTextAbove(Canvas canvas) {
-        //计算Baseline绘制的Y坐标
-        final float y = canvas.getHeight() / 2 - (mTextPaint.descent() / 2 + mTextPaint.ascent() / 2);
-        mCurrentText = mState.getName();
-        if (mCurrentText == null) {
-            mCurrentText = "";
-        }
-        final float textWidth = mTextPaint.measureText(mCurrentText.toString());
-        //color
-        switch (mState) {
-            case DOWNLOADED:
-            case NOT_DOWNLOADED:
-            case SWITCHING:
-            case WAIT_DOWNLOAD:
-                mTextPaint.setShader(null);
-                mTextPaint.setColor(mTextCoverColor);
-                canvas.drawText(mCurrentText.toString(), (getMeasuredWidth() - textWidth) / 2, y, mTextPaint);
-                break;
-            case DOWNLOADING:
-            case PAUSE_DOWNLOAD:
-
-                //进度条压过距离
-                float coverLength = getMeasuredWidth() * mProgressPercent;
-                //开始渐变指示器
-                float indicator1 = getMeasuredWidth() / 2 - textWidth / 2;
-                //结束渐变指示器
-                float indicator2 = getMeasuredWidth() / 2 + textWidth / 2;
-                //文字变色部分的距离
-                float coverTextLength = textWidth / 2 - getMeasuredWidth() / 2 + coverLength;
-                float textProgress = coverTextLength / textWidth;
-                if (coverLength <= indicator1) {
-                    mTextPaint.setShader(null);
-                    mTextPaint.setColor(mTextColor);
-                } else if (indicator1 < coverLength && coverLength <= indicator2) {
-                    //设置变色效果
-                    mProgressTextGradient = new LinearGradient((getMeasuredWidth() - textWidth) / 2, 0, (getMeasuredWidth() + textWidth) / 2, 0,
-                            new int[]{mTextCoverColor, mTextColor},
-                            new float[]{textProgress, textProgress + 0.001f},
-                            Shader.TileMode.CLAMP);
-                    mTextPaint.setColor(mTextColor);
-                    mTextPaint.setShader(mProgressTextGradient);
-                } else {
-                    mTextPaint.setShader(null);
-                    mTextPaint.setColor(mTextCoverColor);
-                }
-                canvas.drawText(mCurrentText.toString(), (getMeasuredWidth() - textWidth) / 2, y, mTextPaint);
-                break;
-            case IN_USE:
-                mTextPaint.setColor(mTextCoverColor);
-                canvas.drawText(mCurrentText.toString(), (getMeasuredWidth() - textWidth) / 2, y, mTextPaint);
-                break;
-            case NOT_ACTIVE:
-                mTextPaint.setColor(mTextColor);
-                canvas.drawText(mCurrentText.toString(), (getMeasuredWidth() - textWidth) / 2, y, mTextPaint);
-                break;
-
-        }
-
-    }
-
-
-    public State getState() {
-        return mState;
-    }
-
-    public void setState(State state) {
-        if (mState != state) {//状态确实有改变
-            this.mState = state;
-            invalidate();
-        }
-    }
-
-    /**
-     * 设置当前按钮文字
-     */
-    public void setCurrentText(CharSequence charSequence) {
-        mCurrentText = charSequence;
-        invalidate();
-    }
-
-
-    /**
-     * 设置带下载进度的文字
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void setProgressText(String text, float progress) {
-        if (progress >= mMinProgress && progress <= mMaxProgress) {
-            DecimalFormat format = new DecimalFormat("##0.0");
-            mCurrentText = text + format.format(progress) + "%";
-            mToProgress = progress;
-            if (mProgressAnimation.isRunning()) {
-                mProgressAnimation.resume();
-                mProgressAnimation.start();
-            } else {
-                mProgressAnimation.start();
-            }
-        } else if (progress < mMinProgress) {
-            mProgress = 0;
-        } else if (progress > mMaxProgress) {
-            mProgress = 100;
-            mCurrentText = text + progress + "%";
-            invalidate();
-        }
-    }
-
-
-    public boolean isShowBorder() {
-        return showBorder;
-    }
-
-    public void setShowBorder(boolean showBorder) {
-        this.showBorder = showBorder;
-    }
-
-    public float getBorderWidth() {
-        return mBorderWidth;
-    }
-
-    public void setBorderWidth(int width) {
-        this.mBorderWidth = dp2px(width);
-    }
-
-    public float getProgress() {
+    // 获取进度
+    public int getProgress() {
         return mProgress;
     }
 
-    public void setProgress(float progress) {
-        this.mProgress = progress;
+    // 设置进度信息
+    public void setProgress(int progress) {
+        Log.d(TAG, "======progress== " + progress);
+        if (!isFinish && !isStop) {
+            mProgress = progress;
+            if (isShowProgress) setText(mProgress + " %");
+            // 设置背景
+            setBackgroundCompat(mProgressDrawableBg);
+            invalidate();
+        }
+
     }
 
-    public float getButtonRadius() {
-        return mButtonRadius;
-    }
+    // 设置状态监听接口
+    interface OnStateListener {
 
-    public void setButtonRadius(float buttonRadius) {
-        mButtonRadius = buttonRadius;
-    }
+        void onFinish();
 
-    public int getTextColor() {
-        return mTextColor;
-    }
+        void onStop();
 
-    public void setTextColor(int textColor) {
-        mTextColor = textColor;
-    }
+        void onContinue();
 
-    public int getTextCoverColor() {
-        return mTextCoverColor;
-    }
-
-    public void setTextCoverColor(int textCoverColor) {
-        mTextCoverColor = textCoverColor;
-    }
-
-    public int getMinProgress() {
-        return mMinProgress;
-    }
-
-    public void setMinProgress(int minProgress) {
-        mMinProgress = minProgress;
-    }
-
-    public int getMaxProgress() {
-        return mMaxProgress;
-    }
-
-    public void setMaxProgress(int maxProgress) {
-        mMaxProgress = maxProgress;
     }
 
     private int dp2px(int dp) {
         float density = getContext().getResources().getDisplayMetrics().density;
         return (int) (dp * density);
     }
-
-
-    private int sp2px(int spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, getContext().getResources().getDisplayMetrics());
-    }
-//    public int sp2px(float spValue) {
-//        final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
-//        return (int) (spValue * fontScale + 0.5f);
-//    }
 }
 
