@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import cn.cnlee.demo.threadcase.bean.Action;
 import cn.cnlee.demo.threadcase.mock.Haizi;
 import cn.cnlee.demo.threadcase.task.ActionCallback;
+import cn.cnlee.demo.threadcase.task.ActionExecutor;
 import cn.cnlee.demo.threadcase.task.ActionTask;
 import cn.cnlee.demo.threadcase.uitls.LogUtils;
 
@@ -22,10 +23,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_1).setOnClickListener(this);
         findViewById(R.id.btn_2).setOnClickListener(this);
 
-//        Action action = Action.builder().id("001").name("weixiao").loop(true).build();
-//        LogUtils.d(TAG, "doAction start: " + action);
+        Action action = Action.builder().id("001").name("weixiao").loop(true).build();
+        LogUtils.d(TAG, "doAction start: " + action);
 //        doAction(action);
-//        LogUtils.d(TAG, "doAction end: " + action);
+        ActionExecutor.getInstance().performAction(action);
+        LogUtils.d(TAG, "doAction end: " + action);
     }
 
     private void doAction(Action action) {
@@ -48,14 +50,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_1: {
                 Action action = Action.builder().id("001").name("huishou").loop(false).build();
                 LogUtils.d(TAG, "doAction start: " + action);
-                doAction(action);
+//                doAction(action);
+                ActionExecutor.getInstance().performAction(action);
                 LogUtils.d(TAG, "doAction end: " + action);
                 break;
             }
             case R.id.btn_2: {
                 Action action = Action.builder().id("001").name("tiaoyue").loop(true).build();
                 LogUtils.d(TAG, "doAction start: " + action);
-                doAction(action);
+//                doAction(action);
+                ActionExecutor.getInstance().performAction(action);
                 LogUtils.d(TAG, "doAction end: " + action);
                 break;
             }

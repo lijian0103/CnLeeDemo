@@ -21,4 +21,6 @@ public class Action {
     String mId;
     String mName;
     boolean mLoop;
+    @Builder.Default
+    int mLoopCount = 1;
 }
