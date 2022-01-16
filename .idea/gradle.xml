@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/playVideo" />
             <option value="$PROJECT_DIR$/protobuf" />
             <option value="$PROJECT_DIR$/rxjavaCase" />
+            <option value="$PROJECT_DIR$/threadCase" />
             <option value="$PROJECT_DIR$/touchEvent" />
           </set>
         </option>

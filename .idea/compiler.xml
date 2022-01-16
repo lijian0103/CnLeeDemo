@@ -20,6 +20,7 @@
       <module name="CnLeeDemo.playVideo" target="11" />
       <module name="CnLeeDemo.protobuf" target="11" />
       <module name="CnLeeDemo.rxjavaCase" target="11" />
+      <module name="CnLeeDemo.threadCase" target="11" />
       <module name="CnLeeDemo.touchEvent" target="11" />
     </bytecodeTargetLevel>
   </component>
