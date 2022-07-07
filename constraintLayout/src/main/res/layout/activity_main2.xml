@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="cn.cnlee.demo.constrainlayout.UiViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_layout"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="40dp"
+            android:background="#fff8f8f8"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="tv1,tv2"
+            app:flow_horizontalBias="0.5"
+            app:flow_horizontalGap="18dp"
+            app:flow_horizontalStyle="packed"
+            app:flow_wrapMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.helper.widget.Layer
+            android:id="@+id/layer_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:constraint_referenced_ids="tv1,tv2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="#22FF44"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="tv1"
+            android:textColor="@color/black"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="#FFFF44"
+            android:padding="10dp"
+            android:text="tv2"
+            android:textColor="@color/black"
+            android:textSize="28sp" />
+
+
+        <Button
+            android:id="@+id/btn_do_anim"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="做动画"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow_layout" />
+
+        <Button
+            android:id="@+id/btn_change_txt"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="改文字"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_do_anim" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
