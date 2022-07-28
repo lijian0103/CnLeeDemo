@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="cn.cnlee.demo.constrainlayout.UiViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vr_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+        <ImageView
+            android:id="@+id/vr_exit_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/icon_vr_close"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/vr_text"
+            style="@style/IMate.Text.VrText"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="17dp"
+            android:text="@{viewmodel.message}"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/vr_exit_btn"
+            app:layout_constraintStart_toEndOf="@id/vr_exit_btn"
+            app:layout_constraintTop_toTopOf="@id/vr_exit_btn"
+            tools:text="一二三四五六七八就时事宜十四十六是吧而是二二三" />
+
+        <Button
+            android:id="@+id/btn_change_txt"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="点击加文字"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vr_text" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

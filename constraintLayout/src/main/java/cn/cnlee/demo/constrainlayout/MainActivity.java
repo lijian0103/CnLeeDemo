@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 
-import java.util.Collections;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv)
     TextView tv;
     private int count = 0;
+    String txt = "";
     private final int int20 = 12;
 
     @Override
@@ -125,12 +125,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_change_txt:
                 Log.d(TAG, "btn_change_txt onClick");
                 count++;
-                String txt = String.join("", Collections.nCopies(count, "文字"));
+//                String txt = String.join("", Collections.nCopies(count, "文字" + count));
+                txt = txt + "文字" + count;
                 mViewModel.setMessage(txt);
                 Log.d(TAG, txt);
-                if (count > int20) {
-                    count = 0;
-                }
+//                if (count > int20) {
+//                    count = 0;
+//                }
                 break;
             case R.id.btn_change_pos:
                 Log.d(TAG, "btn_change_pos onClick");
