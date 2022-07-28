@@ -45,13 +45,14 @@ public class MainActivity3 extends AppCompatActivity {
             case R.id.btn_change_txt:
                 Log.d(TAG, "btn_change_txt onClick");
                 count++;
-                txt += "文字" + count;
+//                txt += "文字" + count;
+                txt += "一二三四五abcde";
                 mViewModel.setMessage(txt);
-                VrTxtUtils.getTxtWidth(tv, txt);
-                VrTxtUtils.getSumOfTxt(tv, txt);
+                 VrTxtUtils.getTxtWidth(tv, txt);
+//                VrTxtUtils.getSumOfTxt(tv, txt);
                 VrTxtUtils.getTxtWidth2(txt, 28);
-                VrTxtUtils.getSumOfTxt2(txt, 28);
-                Log.d(TAG, txt);
+//                VrTxtUtils.getSumOfTxt2(txt, 28);
+                Log.d(TAG, txt + " -- " + VrTxtUtils.dpToPx(200));
             default:
                 break;
         }

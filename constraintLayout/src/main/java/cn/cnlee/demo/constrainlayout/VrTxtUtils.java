@@ -1,5 +1,6 @@
 package cn.cnlee.demo.constrainlayout;
 
+import android.content.res.Resources;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class VrTxtUtils {
         TextPaint textPaint = tv.getPaint();
         length = textPaint.measureText(txt);
         Log.d(TAG, "getTxtWidth: " + length + " -- txt: " + txt);
-        Log.d(TAG, "getDesiredWidth: " + Layout.getDesiredWidth(txt, textPaint));
+        Log.d(TAG, "getDesiredWidth: " + Layout.getDesiredWidth(txt, textPaint) + " -- needDp: " + px2dp(Layout.getDesiredWidth(txt, textPaint)));
         return length;
     }
 
@@ -31,7 +32,7 @@ public class VrTxtUtils {
         textPaint.setTextSize(size);
         length = textPaint.measureText(txt);
         Log.d(TAG, "getTxtWidth2: " + length + " ,textSize: " + size + " -- txt: " + txt);
-        Log.d(TAG, "getDesiredWidth2: " + Layout.getDesiredWidth(txt, textPaint) + " ,textSize: " + size + " -- txt: " + txt);
+        Log.d(TAG, "getDesiredWidth2: " + Layout.getDesiredWidth(txt, textPaint) + " -- needDp: " + px2dp(Layout.getDesiredWidth(txt, textPaint)));
         return length;
     }
 
@@ -60,5 +61,15 @@ public class VrTxtUtils {
     public static float spToPx(int spValue) {
         float fontScale = AppApplication.getInstance().getResources().getDisplayMetrics().scaledDensity;
         return (spValue * fontScale + 0.5f);
+    }
+
+    public static float dpToPx(float dp) {
+        float density = AppApplication.getInstance().getResources().getDisplayMetrics().density;
+        return (dp * density + 0.5f * (dp >= 0 ? 1 : -1));
+    }
+
+    public static int px2dp(final float pxValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 }
