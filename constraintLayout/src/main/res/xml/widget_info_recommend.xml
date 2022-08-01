@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 SAIC MOTOR Z-ONE SOFTWARE COMPANY. All rights reserved.
+  -->
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="@dimen/size_680"
+    android:minHeight="@dimen/size_240"
+    android:previewImage="@mipmap/ic_launcher"
+    android:initialLayout="@layout/widget_recommend_layout"
+    android:resizeMode="none"
+    android:widgetCategory="home_screen"/>

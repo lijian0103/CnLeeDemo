@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2020 SAIC MOTOR Z-ONE SOFTWARE COMPANY. All rights reserved.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_widget_recommend"
+    android:layout_width="@dimen/size_680"
+    android:layout_height="@dimen/size_220"
+    android:background="@drawable/sel_widget_bg">
+
+    <ImageView
+        android:id="@+id/widget_iv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="15dp"
+        android:background="@mipmap/ic_launcher_round"
+        android:clickable="true"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/widget_btn_1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/widget_iv"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_toEndOf="@id/widget_iv"
+        android:textColor="@drawable/sel_color"
+        android:text="查看详情" />
+
+    <TextView
+        android:id="@+id/widget_btn_2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/widget_btn_1"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/widget_btn_1"
+        android:textColor="@drawable/sel_color"
+        android:text="关闭" />
+
+</RelativeLayout>
