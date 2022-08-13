@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 count++;
 //                String txt = String.join("", Collections.nCopies(count, "文字" + count));
                 txt = txt + "文字" + count;
-                mViewModel.setMessage(txt);
+                mViewModel.getMessage().postValue(txt);
                 Log.d(TAG, txt);
 //                if (count > int20) {
 //                    count = 0;

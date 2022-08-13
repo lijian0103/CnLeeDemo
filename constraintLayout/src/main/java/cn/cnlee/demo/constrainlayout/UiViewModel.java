@@ -1,7 +1,6 @@
 package cn.cnlee.demo.constrainlayout;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
 
 public class UiViewModel extends BaseObservable {
@@ -17,7 +16,16 @@ public class UiViewModel extends BaseObservable {
     }
 
     private MutableLiveData<Integer> voiceType = new MutableLiveData<>(VoiceType.IDLE);
-    private String message;
+
+    public MutableLiveData<String> getMessage() {
+        return message;
+    }
+
+    public void setMessage(MutableLiveData<String> message) {
+        this.message = message;
+    }
+
+    private MutableLiveData<String> message = new MutableLiveData<>("");
 
     public MutableLiveData<Integer> getLocation() {
         return mLocation;
@@ -27,15 +35,15 @@ public class UiViewModel extends BaseObservable {
         this.mLocation.postValue(mLocation);
     }
 
-    @Bindable
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-        notifyChange();
-    }
+//    @Bindable
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//        notifyChange();
+//    }
 
     interface VoiceType {
         int IDLE = 0;
