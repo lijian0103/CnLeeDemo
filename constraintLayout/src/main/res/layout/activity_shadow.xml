@@ -23,6 +23,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/card_bg"
             android:elevation="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:outlineAmbientShadowColor="#0F0000"
             android:outlineSpotShadowColor="#0F0000"/>
 
@@ -31,6 +33,9 @@
             android:layout_height="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/card_bg"
             android:elevation="8dp"
             android:outlineAmbientShadowColor="#0F0000"
