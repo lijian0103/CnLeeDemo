@@ -22,6 +22,7 @@
       <module name="CnLeeDemo.rxjavaCase" target="11" />
       <module name="CnLeeDemo.threadCase" target="11" />
       <module name="CnLeeDemo.touchEvent" target="11" />
+      <module name="CnLeeDemo.windowAnimation" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
